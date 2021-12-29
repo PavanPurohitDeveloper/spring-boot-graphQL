@@ -1,0 +1,234 @@
+### What is GraphQL?
+- It was designed by facebook.
+- is a Query language designed through which we can get desired required fields..
+It will give the response specific fields only..that's what people are using GraphQL to get the desired output,
+ whichever field you want as part of response just specify those fields while sending the POST request only those field data will be populated.
+
+- Describe your data
+- Ask for what you want
+- Get predictable results
+
+Blogs:
+https://javagyanmantra.wixsite.com/website/single-post/2018/02/13/GraphQLGraph-Query-Language
+
+GitHub:
+https://github.com/Java-Techie-jt/spring-boot-graphQL
+https://github.com/basanta-spring-boot/Spring-Boot-GraphQL
+
+### To work with GraphQL, we need to add the GraphQL related dependencies in pom.xml
+		<dependency>
+			<groupId>com.graphql-java</groupId>
+			<artifactId>graphql-spring-boot-starter</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.graphql-java</groupId>
+			<artifactId>graphql-java-tools</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
+
+===============================================================================================
+H2 database - Load the test data into H2 database at runtime.
+
+URL: http://localhost:8080/addPerson
+method: POST
+Request:
+[
+    {
+        "id": 64287,
+        "name": "Basant",
+        "mobile": "88965297615",
+        "email": "basant@gmail.com",
+        "address": [
+            "Bangalore", "BTM Layout", "House No : 45"
+        ]
+    },
+    {
+        "id": 26432,
+        "name": "Santosh",
+        "mobile": "99876628989",
+        "email": "santosh@gmail.com",
+        "address": [
+            "Pune", "Chakan", "House No : 88"
+        ]
+    }
+]
+
+Response:
+record inserted 2
+
+===============================================================================================
+URL: http://localhost:8080/findAllPerson
+method: GET
+
+===============================================================================================
+write the typescript to enable the GraphQL.
+and we will write some logic to parse the typescript and we need to do Runtime wiring to apply the GraphQL query.
+src/main/resources/person.graphqls
+file extension must be - *.graphqls
+
+//Inside schema we specify the query
+schema {
+    query: Query  //specify the exact query which you want to perform	
+}
+
+//which we requested, what are the response you expecting
+type Query {
+    getAllPerson : [Person]  //I want to fetch the list of person
+    findPerson(email: String) : Person  //return you One Object from the Person 
+}
+
+//define the fields which is available in my type class Person
+type Person {
+    id: String
+    name: String
+    mobile: String
+    email: String
+    address: [String]
+}
+
+//Load this graphqls file in my controller.
+//Parse it using pre-defined classes
+
+GraphQL - It should be plan/text query.. Not JSON.
+
+==================================================================================================
+Test the graphQL query using postman:
+
+URL: http://localhost:8080/getAll
+method: POST
+Plain/Text
+Request:
+{
+    getAllPerson{
+        name
+        email
+    }
+}
+Response:
+{
+    "errors": [],
+    "data": {
+        "getAllPerson": [
+            {
+                "name": "Santosh",
+                "email": "santosh@gmail.com"
+            },
+            {
+                "name": "Basant",
+                "email": "basant@gmail.com"
+            }
+        ]
+    },
+    "extensions": null
+}
+
+Request:
+{
+    getAllPerson{
+        name
+        address
+    }
+}
+Response:
+{
+    "errors": [],
+    "data": {
+        "getAllPerson": [
+            {
+                "name": "Santosh",
+                "address": [
+                    "Pune",
+                    "Chakan",
+                    "House No : 88"
+                ]
+            },
+            {
+                "name": "Basant",
+                "address": [
+                    "Bangalore",
+                    "BTM Layout",
+                    "House No : 45"
+                ]
+            }
+        ]
+    },
+    "extensions": null
+}
+
+Request:
+{
+    getAllPerson{
+        id
+    }
+}
+Response:
+{
+    "errors": [],
+    "data": {
+        "getAllPerson": [
+            {
+                "id": "26432"
+            },
+            {
+                "id": "64287"
+            }
+        ]
+    },
+    "extensions": null
+}
+
+
+Test the graphQL query using postman:
+
+URL: http://localhost:8080/getPersonByEmail
+method: POST
+Plain/Text
+Request:
+{
+    findPerson(email: "basant@gmail.com") 
+    {
+        name
+        email
+    }    
+}
+Response:
+{
+    "errors": [],
+    "data": {
+        "findPerson": {
+            "name": "Basant",
+            "email": "basant@gmail.com"
+        }
+    },
+    "extensions": null
+}
+
+Request:
+{
+    findPerson(email: "basant@gmail.com") 
+    {
+        name
+        address
+    }    
+}
+Response:
+{
+    "errors": [],
+    "data": {
+        "findPerson": {
+            "name": "Basant",
+            "address": [
+                "Bangalore",
+                "BTM Layout",
+                "House No : 45"
+            ]
+        }
+    },
+    "extensions": null
+}
+
+==========================================================================================================
+
+
