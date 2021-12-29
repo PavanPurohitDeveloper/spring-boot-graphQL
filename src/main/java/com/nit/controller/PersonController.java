@@ -32,7 +32,7 @@ public class PersonController {
     private PersonRepository repository;
 
     //Load this graphqls file in my controller.
-    @Value("classpath:person.graphqls")
+    @Value("classpath:person.graphql")
     private Resource schemaResource;
 
     //Inject the GraphQL
