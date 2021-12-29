@@ -3,10 +3,10 @@
 - is a Query language designed through which we can get desired required fields..
 It will give the response specific fields only..that's what people are using GraphQL to get the desired output,
  whichever field you want as part of response just specify those fields while sending the POST request only those field data will be populated.
+- GraphQL is a relatively new concept from Facebook that is billed as an alternative to REST for Web APIs
 
-- Describe your data
-- Ask for what you want
-- Get predictable results
+Documentation:
+https://graphql.org/
 
 Blogs:
 https://javagyanmantra.wixsite.com/website/single-post/2018/02/13/GraphQLGraph-Query-Language
